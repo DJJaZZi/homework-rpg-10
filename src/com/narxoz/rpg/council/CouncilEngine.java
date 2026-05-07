@@ -41,20 +41,20 @@ public class CouncilEngine {
         healer.prepareAid("healing", "The hospital is ready to receive the wounded.");
 
         System.out.println("\n--- Task Log Analysis (Direct Order) ---");
-        QuestIterator orderedIterator = questLog.getOrderedIterator();
+        QuestIterator orderedIterator = questLog.ordered();
         int totalQuests = 0;
         while (orderedIterator.hasNext()) {
             Quest q = orderedIterator.next();
-            System.out.println("Quest: " + q.getName() + " | Reward: " + q.getRewardGold() + " | Priority: " + q.getPriority());
+            System.out.println("Quest: " + q.getTitle() + " | Reward: " + q.getRewardGold() + " | Priority: " + q.getPriority());
             totalQuests++;
         }
 
         System.out.println("\n--- Task Log Analysis (High Priority) ---");
-        QuestIterator priorityIterator = questLog.getPriorityIterator(QuestPriority.HIGH);
+        QuestIterator priorityIterator = questLog.priorityAtLeast(QuestPriority.HIGH);
         int highPriorityCount = 0;
         while (priorityIterator.hasNext()) {
             Quest q = priorityIterator.next();
-            System.out.println("Urgent quest: " + q.getName());
+            System.out.println("Urgent quest: " + q.getTitle());
             highPriorityCount++;
         }
 

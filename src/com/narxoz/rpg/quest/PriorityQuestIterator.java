@@ -16,12 +16,12 @@ public class PriorityQuestIterator implements QuestIterator {
     @Override
     public boolean hasNext() {
 
-        while (position < quests.size()) {
-
-            if (quests.get(position).getPriority().compareTo(minPriority) >= 0) {
+        int tempPosition = position;
+        while (tempPosition < quests.size()) {
+            if (quests.get(tempPosition).getPriority().compareTo(minPriority) >= 0) {
                 return true;
             }
-            position++;
+            tempPosition++;
         }
         return false;
     }
@@ -31,6 +31,14 @@ public class PriorityQuestIterator implements QuestIterator {
         if (!hasNext()) {
             throw new NoSuchElementException();
         }
-        return quests.get(position++);
+
+        while (position < quests.size()) {
+            Quest current = quests.get(position);
+            position++;
+            if (current.getPriority().compareTo(minPriority) >= 0) {
+                return current;
+            }
+        }
+        throw new NoSuchElementException();
     }
 }

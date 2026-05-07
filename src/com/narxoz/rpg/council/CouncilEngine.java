@@ -18,6 +18,7 @@ public class CouncilEngine {
     private final Scout scout;
     private final Quartermaster quartermaster;
     private final Healer healer;
+    private final Loremaster loremaster; // Добавлен Loremaster
 
     public CouncilEngine(List<Hero> heroes, QuestLog questLog) {
         this.heroes = heroes;
@@ -29,36 +30,39 @@ public class CouncilEngine {
         this.scout = new Scout("Shadow", guildHall);
         this.quartermaster = new Quartermaster("Grim", guildHall);
         this.healer = new Healer("Elaiza", guildHall);
+        this.loremaster = new Loremaster("Eldrin", guildHall);
     }
 
     public CouncilRunResult runCouncil() {
         System.out.println("\n=== THE GUILD COUNCIL MEETING BEGINS ===");
 
         System.out.println("\n--- Discussion of preparation ---");
-        scout.reportRoute("recon", "Goblin activity has been detected in the Eastern Forest..");
+        scout.reportRoute("recon", "Goblin activity has been detected in the Eastern Forest.");
         captain.issueOrder("orders", "Prepare troops for marching to the East!");
-        quartermaster.requestSupplies("supplies", "We need more arrows and provisions..");
+        quartermaster.requestSupplies("supplies", "We need more arrows and provisions.");
         healer.prepareAid("healing", "The hospital is ready to receive the wounded.");
+        loremaster.shareLore("lore", "The ancient texts say Goblins fear fire!"); // Демонстрация Лоремастера
 
-        System.out.println("\n--- Task Log Analysis (Direct Order) ---");
-        QuestIterator orderedIterator = questLog.ordered();
         int totalQuests = 0;
+
+        System.out.println("\n--- Task Log Analysis (Arrival Order) ---");
+        QuestIterator orderedIterator = questLog.ordered();
         while (orderedIterator.hasNext()) {
             Quest q = orderedIterator.next();
             System.out.println("Quest: " + q.getTitle() + " | Reward: " + q.getRewardGold() + " | Priority: " + q.getPriority());
             totalQuests++;
         }
 
-        System.out.println("\n--- Task Log Analysis (High Priority) ---");
-        QuestIterator priorityIterator = questLog.priorityAtLeast(QuestPriority.HIGH);
-        int highPriorityCount = 0;
-        while (priorityIterator.hasNext()) {
-            Quest q = priorityIterator.next();
-            System.out.println("Urgent quest: " + q.getTitle());
-            highPriorityCount++;
+        System.out.println("\n--- Task Log Analysis (Highest Rewards) ---");
+        // Демонстрируем новый итератор
+        QuestIterator rewardIterator = questLog.sortedByReward();
+        while (rewardIterator.hasNext()) {
+            Quest q = rewardIterator.next();
+            System.out.println("Lucrative quest: " + q.getTitle() + " | Reward: " + q.getRewardGold());
         }
 
         System.out.println("\n=== THE MEETING IS ENDED ===");
-        return new CouncilRunResult(totalQuests, highPriorityCount, 4);
+
+        return new CouncilRunResult(totalQuests, guildHall.getMessagesRouted(), guildHall.getMembersNotified());
     }
 }

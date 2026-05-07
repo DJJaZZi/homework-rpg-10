@@ -23,6 +23,10 @@ public class QuestLog {
         return new OrderedQuestIterator(snapshot());
     }
 
+    public QuestIterator sortedByReward() {
+        return new RewardSortedQuestIterator(snapshot());
+    }
+
     public QuestIterator reverse() {
         return new ReverseQuestIterator(snapshot());
     }

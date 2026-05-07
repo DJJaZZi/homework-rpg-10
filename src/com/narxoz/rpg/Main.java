@@ -20,18 +20,18 @@ public class Main {
         );
 
         QuestLog questLog = new QuestLog();
-        questLog.addQuest(new Quest("Collection of herbs", "Collect 10 healing herbs.", 50, QuestPriority.LOW));
-        questLog.addQuest(new Quest("Caravan security", "Protect the merchants before reaching the city.", 150, QuestPriority.MEDIUM));
-        questLog.addQuest(new Quest("Kill the Goblin King", "Clear the cave of the leader.", 500, QuestPriority.HIGH));
-        questLog.addQuest(new Quest("Mail delivery", "Take the letter to the neighboring village.", 20, QuestPriority.LOW));
-        questLog.addQuest(new Quest("City defense", "Fight off the undead's night attack!", 1000, QuestPriority.URGENT));
+        questLog.addQuest(new Quest("Collection of herbs", QuestPriority.LOW, 50, false));
+        questLog.addQuest(new Quest("Caravan security", QuestPriority.NORMAL, 150, false));
+        questLog.addQuest(new Quest("Kill the Goblin King", QuestPriority.HIGH, 500, true));
+        questLog.addQuest(new Quest("Mail delivery", QuestPriority.LOW, 20, false));
+        questLog.addQuest(new Quest("City defense", QuestPriority.URGENT, 1000, true));
 
         CouncilEngine engine = new CouncilEngine(heroes, questLog);
         CouncilRunResult result = engine.runCouncil();
 
         System.out.println("\n--- Council results ---");
-        System.out.println("Total number of quests reviewed: " + result.getQuestsReviewed());
-        System.out.println("Urgent quests found: " + result.getHighPriorityQuestsFound());
-        System.out.println("Officers participated: " + result.getOfficersParticipating());
+        System.out.println("Total quests traversed: " + result.getQuestsTraversed());
+        System.out.println("Messages routed: " + result.getMessagesRouted());
+        System.out.println("Members notified: " + result.getMembersNotified());
     }
 }
